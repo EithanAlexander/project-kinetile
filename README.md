@@ -1,4 +1,4 @@
-# <img src="dashboard-ui/public/project-kinetile.jpeg" alt="" width="56" /> Project Kinetile
+# <img src="dashboard-ui/public/Kinetile.jpeg" alt="" width="60" /> Project Kinetile
 
 **A feasibility engine for localized piezoelectric micro-generation** at pedestrian and light-mobility chokepoints.
 
