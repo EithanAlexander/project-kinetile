@@ -1,5 +1,9 @@
 # Project Kinetile
 
+<p align="center">
+  <img src="dashboard-ui/public/Kinetile.jpeg" alt="Project Kinetile" width="280" />
+</p>
+
 **A feasibility engine for localized piezoelectric micro-generation** at pedestrian and light-mobility chokepoints.
 
 > Portfolio demonstration of event-driven architecture: Python ingestion, Kafka streaming, a Spring Boot physics engine, PostgreSQL persistence, and a React dashboard. Energy figures are **feasibility estimates** aligned with commercial kinetic walkway tiles—not certified field measurements.
@@ -57,7 +61,7 @@ The physics model is intentionally honest and vendor-style:
 - **Impact multiplier (1.0–1.5×):** models walking gait intensity; affects both threshold and harvest scaling.
 - **Non-goals:** no separate mechanical-to-electrical efficiency factor in harvest math; heavy vehicles are out of scope.
 
-For the project brief and AI coding rules, see [AGENTS.md](AGENTS.md).
+For deeper architecture principles and AI-assistant context, see [AGENTS.md](AGENTS.md).
 
 ---
 
