@@ -1,0 +1,12 @@
+[
+  { "id": "ble_beacon", "name": "BLE Tracking Beacon", "dailyRequiredWh": 0.01 },
+  { "id": "ped_counter", "name": "Pedestrian Counter", "dailyRequiredWh": 1.5 },
+  { "id": "bike_counter", "name": "Bike Lane Counter", "dailyRequiredWh": 2.0 },
+  { "id": "env_sensor", "name": "Outdoor Air Quality Node", "dailyRequiredWh": 12.0 },
+  { "id": "noise_sensor", "name": "Urban Noise Monitor", "dailyRequiredWh": 4.0 },
+  { "id": "wayfinding_sign", "name": "E-Ink Wayfinding Sign", "dailyRequiredWh": 2.0 },
+  { "id": "transit_sign", "name": "E-Ink Transit Schedule", "dailyRequiredWh": 2.5 },
+  { "id": "led_marker", "name": "LED Pavement Marker", "dailyRequiredWh": 6.0 },
+  { "id": "led_warning_unit", "name": "Active Crosswalk LED Warning Unit", "dailyRequiredWh": 36.0 },
+  { "id": "wifi_ap", "name": "Public Wi-Fi Access Point", "dailyRequiredWh": 180.0 }
+]

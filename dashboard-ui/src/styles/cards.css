@@ -1,0 +1,196 @@
+/* Tables — type insights */
+.rgf-table-type {
+  table-layout: fixed;
+  border-collapse: separate;
+  border-spacing: 0;
+  text-align: left;
+  font-size: 0.875rem;
+}
+
+.rgf-table-type thead tr {
+  border-bottom: 1px solid var(--rgf-border-cyan);
+  background-color: var(--rgf-surface-table-head);
+}
+
+.rgf-th {
+  position: relative;
+  box-sizing: border-box;
+  padding: 0.875rem 1rem;
+  text-align: left;
+  vertical-align: top;
+  font-weight: 600;
+  letter-spacing: 0.025em;
+  color: color-mix(in srgb, var(--rgf-accent) 92%, var(--rgf-text-heading));
+}
+
+.rgf-th-sub {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 400;
+  color: var(--rgf-accent-dim);
+}
+
+.rgf-resize-handle {
+  position: absolute;
+  right: 0;
+  top: 0;
+  z-index: 10;
+  height: 100%;
+  width: 0.75rem;
+  cursor: col-resize;
+  touch-action: none;
+  border: 0;
+  background: transparent;
+  padding: 0;
+}
+
+.rgf-resize-handle:hover {
+  background-color: var(--rgf-resize-hover);
+}
+
+.rgf-resize-handle:active {
+  background-color: var(--rgf-resize-active);
+}
+
+.rgf-table-type tbody {
+  border-color: var(--rgf-border-row);
+}
+
+.rgf-table-type tbody tr {
+  border-bottom: 1px solid var(--rgf-border-row);
+}
+
+.rgf-table-type tbody tr:hover {
+  background-color: var(--rgf-row-hover);
+}
+
+.rgf-td-type {
+  padding: 0.875rem 1rem;
+  font-weight: 500;
+  color: var(--rgf-text-secondary);
+}
+
+.rgf-td-accent {
+  padding: 0.875rem 1rem;
+  font-family: ui-monospace, monospace;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  color: color-mix(in srgb, var(--rgf-accent) 55%, var(--rgf-text-primary));
+}
+
+.rgf-td-num {
+  padding: 0.875rem 1rem;
+  font-family: ui-monospace, monospace;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  color: var(--rgf-text-secondary);
+}
+
+.rgf-cell-empty {
+  padding: 3rem 1rem;
+  text-align: center;
+  color: var(--rgf-text-subtle);
+}
+
+.rgf-tfoot-row {
+  border-top: 2px solid var(--rgf-footer-border);
+  background-color: var(--rgf-footer-bg);
+}
+
+.rgf-tfoot-label {
+  padding: 0.875rem 1rem;
+  font-weight: 600;
+  color: color-mix(in srgb, var(--rgf-accent) 50%, var(--rgf-text-primary));
+}
+
+.rgf-tfoot-num-strong {
+  padding: 0.875rem 1rem;
+  font-family: ui-monospace, monospace;
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+  white-space: nowrap;
+  color: color-mix(in srgb, var(--rgf-accent) 45%, var(--rgf-text-primary));
+}
+
+.rgf-tfoot-num {
+  padding: 0.875rem 1rem;
+  font-family: ui-monospace, monospace;
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+  white-space: nowrap;
+  color: var(--rgf-text-secondary);
+}
+
+/* Location cards */
+.rgf-card-loc {
+  border-radius: 0.75rem;
+  border: 1px solid var(--rgf-card-border);
+  background: linear-gradient(
+    to bottom right,
+    var(--rgf-card-gradient-from),
+    var(--rgf-card-gradient-to)
+  );
+  padding: 1.25rem;
+  box-shadow: var(--rgf-card-shadow);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.rgf-card-loc:hover {
+  border-color: var(--rgf-card-border-hover);
+  box-shadow: var(--rgf-card-shadow-hover);
+}
+
+.rgf-card-loc h3 {
+  font-size: 1.125rem;
+  font-weight: 600;
+  letter-spacing: -0.025em;
+  color: var(--rgf-text-heading);
+  transition: color 0.2s ease;
+}
+
+.rgf-card-loc:hover h3 {
+  color: color-mix(in srgb, var(--rgf-accent) 35%, var(--rgf-text-heading));
+}
+
+.rgf-card-metric {
+  margin-top: 0.75rem;
+  font-family: ui-monospace, monospace;
+  font-size: 1.5rem;
+  font-variant-numeric: tabular-nums;
+  color: var(--rgf-card-metric);
+}
+
+.rgf-card-metric span {
+  margin-left: 0.375rem;
+  font-family: ui-sans-serif, system-ui, sans-serif;
+  font-size: 0.875rem;
+  font-weight: 400;
+  color: var(--rgf-text-subtle);
+}
+
+.rgf-card-list {
+  margin-top: 1rem;
+  border-top: 1px solid var(--rgf-card-list-border);
+  padding-top: 1rem;
+  font-size: 0.875rem;
+  color: var(--rgf-text-secondary);
+}
+
+.rgf-card-list li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.rgf-card-list li + li {
+  margin-top: 0.5rem;
+}
+
+.rgf-card-list .mono {
+  flex-shrink: 0;
+  font-family: ui-monospace, monospace;
+  font-variant-numeric: tabular-nums;
+  color: var(--rgf-text-secondary);
+}
+

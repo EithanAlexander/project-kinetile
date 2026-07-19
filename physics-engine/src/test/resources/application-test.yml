@@ -1,0 +1,47 @@
+# Test profile: isolate Spring integration tests from the developer PostgreSQL instance.
+# All JPA DDL and data live in an in-memory H2 database (create-drop); nothing touches localhost:15432.
+spring:
+  main:
+    allow-circular-references: false
+  datasource:
+    url: jdbc:h2:mem:projectkinetile_test;MODE=PostgreSQL;DATABASE_TO_LOWER=TRUE;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    driver-class-name: org.h2.Driver
+    username: sa
+    password: ""
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: false
+
+hardware:
+  tile:
+    activation-threshold-newtons: 100
+    min-rated-output-joules: 2.0
+    max-rated-output-joules: 5.0
+    max-scale-mass-kg: 90
+    max-displacement-meters: 0.0001
+
+app:
+  physics:
+    gravity: 9.81
+  rate-limit:
+    enabled: false
+    requests-per-minute: 60
+    penalty-escalation-minutes:
+      - 5
+      - 15
+      - 60
+      - 1440
+    permanent-after-violations: 5
+    violation-window-hours: 24
+    entry-ttl-minutes: 120
+  api:
+    max-query-string-length: ${APP_API_MAX_QUERY_STRING_LENGTH:128}
+    timeseries-max-months: ${APP_API_TIMESERIES_MAX_MONTHS:24}
+    ledger-max-page-size: ${APP_API_LEDGER_MAX_PAGE_SIZE:200}
+  kafka:
+    consumer:
+      max-payload-bytes: ${APP_KAFKA_MAX_PAYLOAD_BYTES:8192}
+    topics:
+      raw-traffic: ${APP_KAFKA_RAW_TRAFFIC_TOPIC:raw-traffic-events}
+      raw-traffic-dlq: ${APP_KAFKA_RAW_TRAFFIC_DLQ_TOPIC:raw-traffic-events-dlq}

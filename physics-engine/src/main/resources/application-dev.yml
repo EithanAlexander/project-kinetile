@@ -1,0 +1,11 @@
+spring:
+  jpa:
+    show-sql: true
+
+server:
+  error:
+    include-message: always
+
+app:
+  rate-limit:
+    enabled: true

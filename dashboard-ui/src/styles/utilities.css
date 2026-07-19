@@ -1,0 +1,46 @@
+/* Status / feedback messages */
+.rgf-status {
+  margin: 0;
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+
+.rgf-status--panel {
+  border-radius: 0.75rem;
+  padding: 1.5rem 2.5rem;
+  text-align: center;
+}
+
+.rgf-status--inline {
+  font-size: 0.875rem;
+}
+
+.rgf-status--loading {
+  color: var(--rgf-text-subtle);
+}
+
+.rgf-status--panel.rgf-status--loading {
+  border: 1px solid var(--rgf-border-cyan-mid);
+  background-color: var(--rgf-surface-panel);
+  padding: 2.5rem;
+}
+
+.rgf-status--error {
+  color: var(--rgf-error-text);
+}
+
+.rgf-status--panel.rgf-status--error {
+  border: 1px solid var(--rgf-error-border);
+  background-color: var(--rgf-error-bg);
+  padding: 1.5rem;
+}
+
+.rgf-empty {
+  grid-column: 1 / -1;
+  border-radius: 0.75rem;
+  border: 1px solid var(--rgf-empty-border);
+  background-color: var(--rgf-empty-bg);
+  padding: 3rem;
+  text-align: center;
+  color: var(--rgf-text-subtle);
+}

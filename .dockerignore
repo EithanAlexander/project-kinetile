@@ -1,0 +1,4 @@
+.git
+dashboard-ui/node_modules
+ingestion-service/.venv
+**/target

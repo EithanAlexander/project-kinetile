@@ -1,0 +1,36 @@
+# Local secrets / overrides (see .env.example)
+.env
+
+# Python (Poetry in-project virtualenv)
+ingestion-service/.venv/
+
+# Maven
+**/target/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+*.egg-info/
+.eggs/
+dist/
+build/
+
+# Node (root-level safety; dashboard-ui has its own .gitignore)
+node_modules/
+
+# OS / editors
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+.idea/
+*.iml
+.cursor/
+.settings/
+.project
+
+# Logs
+*.log
+logs/

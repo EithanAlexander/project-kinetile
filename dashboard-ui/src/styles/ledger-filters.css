@@ -1,0 +1,115 @@
+/* Energy ledger — grouped filter panels */
+.rgf-h2-section {
+  margin: 0 0 0.35rem 0;
+  font-size: 1.5rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--rgf-text-heading);
+}
+
+.rgf-lead-ledger {
+  margin: 0;
+  max-width: 52rem;
+  font-size: 0.875rem;
+  line-height: 1.55;
+  color: var(--rgf-text-subtle);
+}
+
+.rgf-ledger-default-hint {
+  margin-top: 0.75rem;
+  border-radius: 0.5rem;
+  border: 1px solid color-mix(in srgb, var(--rgf-accent) 35%, var(--rgf-border-cyan-mid));
+  background-color: color-mix(in srgb, var(--rgf-surface-panel) 88%, var(--rgf-accent) 12%);
+  padding: 0.65rem 0.85rem;
+  font-size: 0.8125rem;
+  line-height: 1.45;
+  color: var(--rgf-text-body);
+}
+
+.rgf-filter-sections {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.5rem;
+}
+
+.rgf-filter-details {
+  overflow: hidden;
+  border-radius: 0.75rem;
+  border: 1px solid var(--rgf-border-cyan-mid);
+  background-color: var(--rgf-surface-panel);
+}
+
+.rgf-filter-details > summary {
+  cursor: pointer;
+  list-style: none;
+  padding: var(--rgf-content-padding-y) var(--rgf-content-padding-x);
+  font-weight: 600;
+  font-size: 1.25rem;
+  line-height: 1.3;
+  letter-spacing: -0.015em;
+  color: var(--rgf-text-heading);
+  user-select: none;
+  text-wrap: balance;
+}
+
+.rgf-filter-details > summary::-webkit-details-marker {
+  display: none;
+}
+
+.rgf-filter-details > summary::before {
+  content: '▸';
+  display: inline-block;
+  margin-right: 0.45rem;
+  opacity: 0.75;
+  transition: transform 0.15s ease;
+}
+
+.rgf-filter-details[open] > summary::before {
+  transform: rotate(90deg);
+}
+
+.rgf-filter-details-body {
+  border-top: 1px solid var(--rgf-border-cyan-mid);
+  padding: var(--rgf-content-padding-y) var(--rgf-content-padding-x);
+}
+
+/* Wide filter panels (e.g. four numeric fields) span the full filter row. */
+.rgf-filter-details-full {
+  grid-column: 1 / -1;
+}
+
+.rgf-filter-grid {
+  display: grid;
+  gap: 1rem;
+}
+
+.rgf-filter-grid .rgf-input,
+.rgf-filter-grid .rgf-select {
+  max-width: none;
+  min-width: 0;
+}
+
+@media (min-width: 640px) {
+  .rgf-filter-grid {
+    grid-template-columns: repeat(2, minmax(12rem, 1fr));
+  }
+}
+
+@media (min-width: 1024px) {
+  .rgf-filter-grid.rgf-filter-grid-3 {
+    grid-template-columns: repeat(3, minmax(12rem, 1fr));
+  }
+}
+
+@media (min-width: 768px) {
+  .rgf-filter-grid.rgf-filter-grid-4 {
+    grid-template-columns: repeat(2, minmax(12rem, 1fr));
+  }
+}
+
+@media (min-width: 1280px) {
+  .rgf-filter-grid.rgf-filter-grid-4 {
+    grid-template-columns: repeat(4, minmax(11rem, 1fr));
+  }
+}
+

@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/jpeg" href="/Kinetile.jpeg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Project Kinetile</title>
+    <script>
+      (function () {
+        try {
+          var mode = localStorage.getItem('rgf-color-mode') || 'dark'
+          var dark = true
+          if (mode === 'light') dark = false
+          else if (mode === 'dark') dark = true
+          else dark = window.matchMedia('(prefers-color-scheme: dark)').matches
+          var root = document.documentElement
+          root.dataset.theme = dark ? 'dark' : 'light'
+          root.style.colorScheme = dark ? 'dark' : 'light'
+          var pal = localStorage.getItem('rgf-palette')
+          if (pal === 'eco') root.dataset.palette = 'eco'
+          var hc = localStorage.getItem('rgf-high-contrast')
+          if (hc === '1' || hc === 'true') root.dataset.a11yContrast = 'high'
+          var fsz = localStorage.getItem('rgf-font-scale')
+          if (!fsz) {
+            var leg = localStorage.getItem('rgf-comfortable-text')
+            if (leg === '1' || leg === 'true') fsz = 'comfortable'
+          }
+          if (fsz === 'comfortable') root.dataset.fontScale = 'comfortable'
+          else if (fsz === 'large') root.dataset.fontScale = 'large'
+          var rm = localStorage.getItem('rgf-reduce-motion') || 'system'
+          var prm = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+          root.dataset.motion =
+            rm === 'always' || (rm === 'system' && prm) ? 'reduce' : 'normal'
+        } catch (e) {
+          document.documentElement.dataset.theme = 'dark'
+        }
+      })()
+    </script>
+  </head>
+  <body class="m-0 antialiased">
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

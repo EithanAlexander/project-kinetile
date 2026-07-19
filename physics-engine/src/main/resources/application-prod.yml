@@ -1,0 +1,14 @@
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: false
+
+server:
+  error:
+    include-stacktrace: never
+    include-message: never
+
+app:
+  rate-limit:
+    enabled: true

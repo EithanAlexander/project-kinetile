@@ -1,0 +1,95 @@
+# Kafka + PostgreSQL only (KRaft). Use for local development:
+# run this file, then start physics-engine, dashboard-ui, and ingestion-service on the host.
+#
+#   docker compose -f docker-compose.infra.yml up -d --build
+#
+# db-init runs once per up (like kafka-init): Flyway migrations + catalog seed when empty.
+# Safe to re-run on an existing DB; set DB_INIT_FORCE=true only to truncate and re-seed.
+#
+# Full stack (all services in containers): docker compose up
+name: projectkinetile
+
+services:
+  kafka:
+    image: apache/kafka:4.0.0
+    container_name: projectkinetile-kafka
+    ports:
+      - "9092:9092"
+    environment:
+      KAFKA_NODE_ID: 1
+      KAFKA_PROCESS_ROLES: broker,controller
+      KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
+      KAFKA_CONTROLLER_QUORUM_VOTERS: 1@kafka:9093
+
+      # Host clients: localhost:9092. In-compose clients: kafka:29092
+      KAFKA_LISTENERS: PLAINTEXT://:9092,PLAINTEXT_INTERNAL://:29092,CONTROLLER://:9093
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092,PLAINTEXT_INTERNAL://kafka:29092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_INTERNAL:PLAINTEXT,CONTROLLER:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT_INTERNAL
+
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+      KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
+    healthcheck:
+      test: ["CMD-SHELL", "/opt/kafka/bin/kafka-topics.sh --bootstrap-server localhost:9092 --list > /dev/null 2>&1"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+
+  postgres:
+    image: postgres:16
+    container_name: projectkinetile-postgres
+    ports:
+      - "${POSTGRES_HOST_PORT:-15432}:5432"
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-projectkinetile}
+      POSTGRES_USER: ${POSTGRES_USER:-projectkinetile}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-projectkinetile}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U \"$$POSTGRES_USER\" -d \"$$POSTGRES_DB\""]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+
+  kafka-init:
+    image: apache/kafka:4.0.0
+    container_name: projectkinetile-kafka-init
+    depends_on:
+      kafka:
+        condition: service_healthy
+    entrypoint: ["/opt/kafka/bin/kafka-topics.sh"]
+    command:
+      - --create
+      - --if-not-exists
+      - --topic
+      - raw-traffic-events
+      - --bootstrap-server
+      - kafka:29092
+      - --partitions
+      - "2"
+      - --replication-factor
+      - "1"
+    restart: "no"
+
+  db-init:
+    build:
+      context: .
+      dockerfile: db-init/Dockerfile
+    container_name: projectkinetile-db-init
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      POSTGRES_HOST: postgres
+      POSTGRES_HOST_PORT: 5432
+      POSTGRES_DB: ${POSTGRES_DB:-projectkinetile}
+      POSTGRES_USER: ${POSTGRES_USER:-projectkinetile}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-projectkinetile}
+      DB_INIT_FORCE: ${DB_INIT_FORCE:-false}
+    restart: "no"
+
+volumes:
+  postgres_data:

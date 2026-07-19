@@ -1,0 +1,115 @@
+spring:
+  application:
+    name: physics-engine
+
+  profiles:
+    active: ${SPRING_PROFILES_ACTIVE:dev}
+
+  autoconfigure:
+    exclude: org.springframework.boot.autoconfigure.security.servlet.UserDetailsServiceAutoConfiguration
+
+  threads:
+    virtual:
+      enabled: true
+
+  # Aligned with repo root docker-compose (service postgres).
+  # Default host port 15432 avoids local PostgreSQL on 5432 and Windows Hyper-V reserved ranges around 5433.
+  # Override only when deploying: POSTGRES_HOST_PORT, POSTGRES_DB, POSTGRES_USER, POSTGRES_PASSWORD.
+  datasource:
+    url: jdbc:postgresql://localhost:${POSTGRES_HOST_PORT:15432}/${POSTGRES_DB:projectkinetile}
+    username: ${POSTGRES_USER:projectkinetile}
+    password: ${POSTGRES_PASSWORD:projectkinetile}
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: false
+  flyway:
+    enabled: false
+
+  kafka:
+    bootstrap-servers: ${SPRING_KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
+    consumer:
+      group-id: ${app.kafka.consumer.group-id}
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      auto-offset-reset: earliest
+      properties:
+        '[max.partition.fetch.bytes]': 16384
+    listener:
+      concurrency: 2
+
+server:
+  tomcat:
+    max-connections: 200
+    threads:
+      max: 100
+    accept-count: 50
+  error:
+    include-stacktrace: never
+    include-message: never
+
+app:
+  cors:
+    allowed-origins: ${APP_CORS_ALLOWED_ORIGINS:http://localhost:3000,http://localhost:8080}
+  rate-limit:
+    enabled: ${APP_RATE_LIMIT_ENABLED:true}
+    requests-per-minute: ${APP_RATE_LIMIT_RPM:60}
+    penalty-escalation-minutes:
+      - 5
+      - 15
+      - 60
+      - 1440
+    permanent-after-violations: ${APP_RATE_LIMIT_PERMANENT_AFTER_VIOLATIONS:5}
+    violation-window-hours: ${APP_RATE_LIMIT_VIOLATION_WINDOW_HOURS:24}
+    entry-ttl-minutes: ${APP_RATE_LIMIT_ENTRY_TTL_MINUTES:120}
+    cleanup-interval-minutes: ${APP_RATE_LIMIT_CLEANUP_INTERVAL_MINUTES:30}
+  api:
+    max-query-string-length: ${APP_API_MAX_QUERY_STRING_LENGTH:128}
+    timeseries-max-months: ${APP_API_TIMESERIES_MAX_MONTHS:24}
+    ledger-max-page-size: ${APP_API_LEDGER_MAX_PAGE_SIZE:200}
+  kafka:
+    consumer:
+      group-id: physics-engine-group
+      max-payload-bytes: ${APP_KAFKA_MAX_PAYLOAD_BYTES:8192}
+      error-max-retries: ${APP_KAFKA_ERROR_MAX_RETRIES:2}
+      error-backoff-ms: ${APP_KAFKA_ERROR_BACKOFF_MS:500}
+    topics:
+      raw-traffic: ${APP_KAFKA_RAW_TRAFFIC_TOPIC:raw-traffic-events}
+      raw-traffic-dlq: ${APP_KAFKA_RAW_TRAFFIC_DLQ_TOPIC:raw-traffic-events-dlq}
+  db:
+    connect:
+      retry:
+        max-attempts: 6
+        backoff-ms: 2000
+
+  edge-devices:
+    # Classpath-relative JSON path (no leading slash). Omit key to use data/edge-devices.json.
+    catalog-resource: ${APP_EDGE_DEVICES_CATALOG_RESOURCE:data/edge-devices.json}
+  tile-monitoring:
+    inactivity-threshold-days: ${APP_TILE_INACTIVITY_THRESHOLD_DAYS:5}
+
+  physics:
+    gravity: 9.81
+
+hardware:
+  tile:
+    activation-threshold-newtons: ${HARDWARE_TILE_ACTIVATION_THRESHOLD_NEWTONS:100}
+    min-rated-output-joules: ${HARDWARE_TILE_MIN_RATED_OUTPUT_JOULES:2.0}
+    max-rated-output-joules: ${HARDWARE_TILE_MAX_RATED_OUTPUT_JOULES:5.0}
+    max-scale-mass-kg: ${HARDWARE_TILE_MAX_SCALE_MASS_KG:90}
+    max-displacement-meters: ${HARDWARE_TILE_MAX_DISPLACEMENT_METERS:0.0001}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  info:
+    env:
+      enabled: true
+
+info:
+  app:
+    name: ${spring.application.name}
+    description: Project Kinetile physics engine — Kafka ingestion, piezoelectric model, REST analytics
