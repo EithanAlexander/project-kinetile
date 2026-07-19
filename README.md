@@ -1,9 +1,5 @@
 # Project Kinetile
 
-<p align="center">
-  <img src="dashboard-ui/public/Kinetile.jpeg" alt="Project Kinetile" width="280" />
-</p>
-
 **A feasibility engine for localized piezoelectric micro-generation** at pedestrian and light-mobility chokepoints.
 
 > Portfolio demonstration of event-driven architecture: Python ingestion, Kafka streaming, a Spring Boot physics engine, PostgreSQL persistence, and a React dashboard. Energy figures are **feasibility estimates** aligned with commercial kinetic walkway tiles—not certified field measurements.
