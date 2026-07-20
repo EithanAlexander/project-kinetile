@@ -42,11 +42,25 @@ Seeded in `tile_manufacturers` — **name only** in DB/API:
 * **physics-engine** uses `ddl-auto: validate` only — no Flyway, no seed on startup.
 * **firehose** loads active `tile_id` values from PostgreSQL after db-init; never mints UUIDs.
 
+## 🌿 GitHub workflow (post-v1)
+
+* **One feature → one branch.** Every new feature or non-trivial change gets a dedicated branch off an up-to-date `main` (e.g. `feature/...` or `fix/...`). Work is reviewed and landed on `main` via a pull request (opened and merged by the human maintainer—see agent boundaries below).
+* **Stay aligned with `main` (rebase vs merge — use the right one):**
+  * **Update a feature branch with the latest `main` (default):** **rebase** the feature branch onto `origin/main` (`git fetch origin` then `git rebase origin/main`). Prefer this while the branch is yours alone—it keeps history linear and the PR easy to review. If the branch was already pushed, update the remote with `git push --force-with-lease` after a rebase (never `--force`).
+  * **Do not rebase shared history:** if anyone else is also committing on that feature branch, **merge** `origin/main` into the feature branch instead (`git merge origin/main`). Merging preserves shared commits; rebasing would rewrite them and confuse collaborators.
+  * **Land the PR on `main`:** use GitHub **Squash and merge** (default for this project) so `main` stays a clean sequence of feature commits. Do not rebase `main` itself. Only the human maintainer merges into `main`.
+* **PR gate — nothing merges broken.** Before a PR is opened or merged, run the relevant test suites (`mvn test`, dashboard Vitest, ingestion pytest) and smoke-check that the change behaves as intended. The PR must not introduce regressions.
+* **If tests fail after a change, it is one of two cases only:**
+  1. **Real defect** — the change breaks intended behavior; fix the code before continuing.
+  2. **Intentional behavior change** — the new behavior is desired; update the tests (and any formula-paired suites) to match. Do not leave failing tests as “known debt.”
+* **Agent git boundaries (for now):** Cursor/AI agents **may** create feature branches, fetch/pull, rebase/merge per the rules above, commit, and push feature branches when asked. Agents **must not** open pull requests, merge into `main`, or otherwise land changes on `main`—the human maintainer does those steps.
+
 ## 🤖 Cursor AI Directives (Rules for the AI)
 * Always assume Java 21 features (like Virtual Threads and Records).
 * Always assume Kafka KRaft mode configuration.
 * Keep dependencies minimal and modern.
 * Prioritize readability and clean architecture.
+* Follow the **GitHub workflow** above: work on feature branches, stay aligned with `main`, and leave tests green (or deliberately updated) before considering work PR-ready. **Do not** create PRs or merge to `main` unless the user explicitly lifts that restriction.
 * When changing harvest math, update **Java engine, JS calculator, hardware config DTO/YAML, and both test suites** in the same change; never leave frontend and backend on different formulas.
 * Security: NEVER hardcode secrets, passwords, or API keys in the code. Always use Environment Variables or Spring Profiles (`application.yml` via `${ENV_VAR}`).
 * Security: Always implement Spring Boot Validation (e.g., `@Valid`, `@NotNull`, `@Min`) on incoming DTOs.
