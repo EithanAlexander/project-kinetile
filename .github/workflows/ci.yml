@@ -84,11 +84,22 @@ jobs:
     if: always()
     steps:
       - name: Require all jobs to succeed
+        env:
+          JAVA_RESULT: ${{ needs.java.result }}
+          DASHBOARD_RESULT: ${{ needs.dashboard.result }}
+          INGESTION_RESULT: ${{ needs.ingestion.result }}
         run: |
-          if [ "${{ needs.java.result }}" != "success" ] \
-            || [ "${{ needs.dashboard.result }}" != "success" ] \
-            || [ "${{ needs.ingestion.result }}" != "success" ]; then
-            echo "One or more CI jobs failed."
+          failed=0
+          for pair in "java:${JAVA_RESULT}" "dashboard:${DASHBOARD_RESULT}" "ingestion:${INGESTION_RESULT}"; do
+            name="${pair%%:*}"
+            result="${pair##*:}"
+            echo "${name}: ${result}"
+            if [ "${result}" != "success" ]; then
+              echo "::error::CI job '${name}' did not succeed (result=${result})"
+              failed=1
+            fi
+          done
+          if [ "${failed}" -ne 0 ]; then
             exit 1
           fi
           echo "All CI jobs passed."
