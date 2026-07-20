@@ -30,6 +30,15 @@ Thumbs.db
 .cursor/
 .settings/
 .project
+.classpath
+.factorypath
+.vscode/*
+!.vscode/extensions.json
+
+# Local Maven dumps (not source of truth)
+**/cp.txt
+**/dependency-tree.txt
+**/effective-pom.xml
 
 # Logs
 *.log
