@@ -100,7 +100,7 @@ flowchart TB
   end
   subgraph compute [Compute and storage]
     Engine["physics-engine"]
-    PG[("PostgreSQL 16")]
+    PG[("Relational database")]
   end
   subgraph present [Presentation]
     API["REST /api/v1"]
