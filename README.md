@@ -333,6 +333,10 @@ cd dashboard-ui && npm run test
 cd ingestion-service && poetry run pytest
 ```
 
+Pull requests and pushes to `main` run **GitHub Actions**: unit tests (CI) and **CodeQL** security scanning. After the workflows have run once on `main`, protect the branch so merge requires green checks (`ci-success` plus the CodeQL Analyze jobs).
+
+Optional: you can add a weekly `schedule` cron to [`.github/workflows/codeql.yml`](.github/workflows/codeql.yml) if you want CodeQL to refresh the Security tab even when there are no PRs; this repo does not enable that by default.
+
 ---
 
 ## Module documentation
